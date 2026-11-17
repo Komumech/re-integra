@@ -438,18 +438,14 @@ function draw(v){
   document.body.dataset.i=v>.08?1:0;
 }
 
-/* One deliberate gesture advances one panel; its internal story animates along the way. */
+/* One deliberate gesture advances one authored scroll stage. */
 var v=0,cur=0,tw=null,lockUntil=0,lastV=-1;
 function to(idx){
   idx=cl(idx,0,S.length-1);if(idx===cur&&!tw)return;
   var now=performance.now(),d=reduce?1:Math.min(900,520+Math.abs(S[idx]-v)*120);
   tw={a:v,b:S[idx],t0:now,d:d};cur=idx;lockUntil=now+d+120;
 }
-function stepPanel(direction){
-  var section=0;
-  for(var j=1;j<N&&first[j]<=cur;j++)section=j;
-  to(first[cl(section+direction,0,N-1)]);
-}
+function stepStage(direction){to(cur+direction)}
 function frame(t){
   if(tw){var p=cl((t-tw.t0)/tw.d,0,1);v=tw.a+(tw.b-tw.a)*(p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2);if(p>=1)tw=null}
   if(v!==lastV){lastV=v;draw(v)}
@@ -463,14 +459,14 @@ addEventListener('wheel',function(e){
   if(n<lockUntil){openG=false;return}
   if(!openG)return;
   acc+=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?window.innerHeight:1);
-  if(Math.abs(acc)>=45){openG=false;stepPanel(acc>0?1:-1)}
+  if(Math.abs(acc)>=45){openG=false;stepStage(acc>0?1:-1)}
 },{passive:false});
 var ty=null,tdone=false;
 addEventListener('touchstart',function(e){ty=e.touches[0].clientY;tdone=false},{passive:true});
 addEventListener('touchmove',function(e){
   e.preventDefault();
   if(ty===null||tdone||performance.now()<lockUntil||menu.classList.contains('open'))return;
-  var d=ty-e.touches[0].clientY;if(Math.abs(d)>40){tdone=true;stepPanel(d>0?1:-1)}
+  var d=ty-e.touches[0].clientY;if(Math.abs(d)>40){tdone=true;stepStage(d>0?1:-1)}
 },{passive:false});
 addEventListener('touchend',function(){ty=null},{passive:true});
 addEventListener('keydown',function(e){
@@ -484,8 +480,8 @@ addEventListener('keydown',function(e){
     return;
   }
   if(performance.now()<lockUntil)return;
-  if(['ArrowDown','PageDown'].indexOf(e.key)>-1||(e.key===' '&&!e.shiftKey)){e.preventDefault();stepPanel(1)}
-  if(['ArrowUp','PageUp'].indexOf(e.key)>-1||(e.key===' '&&e.shiftKey)){e.preventDefault();stepPanel(-1)}
+  if(['ArrowDown','PageDown'].indexOf(e.key)>-1||(e.key===' '&&!e.shiftKey)){e.preventDefault();stepStage(1)}
+  if(['ArrowUp','PageUp'].indexOf(e.key)>-1||(e.key===' '&&e.shiftKey)){e.preventDefault();stepStage(-1)}
 });
 function openMenu(){
   if(menu.classList.contains('open'))return;
