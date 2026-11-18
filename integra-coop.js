@@ -168,7 +168,7 @@
   var app = $("#app"),
     appText = $("#appText"),
     appMobile = $("#appMobile"),
-    mobileFeatures = [],
+    mobileFeatureSteps = [],
     appHeadings = $$("#appHeadings > div"),
     appDescriptions = $$(".app-descriptions > div"),
     phoneWrap = $("#phoneWrap"),
@@ -181,7 +181,9 @@
     storyLoopWidth = 0;
   var featureBackgrounds = ["#f3f6f8", "#e5edf0", "#f1eef7", "#eef2e1"];
   screens.forEach(function (screen, i) {
-    var feature = document.createElement("article"),
+    var step = document.createElement("div"),
+      feature = document.createElement("article"),
+      heading = document.createElement("div"),
       index = document.createElement("span"),
       title = document.createElement("h2"),
       device = document.createElement("div"),
@@ -190,10 +192,14 @@
       description = document.createElement("p");
     feature.className = "app-feature";
     feature.style.setProperty("--feature-bg", featureBackgrounds[i]);
+    step.className = "app-feature-step";
+    step.style.zIndex = i + 1;
+    heading.className = "app-feature-heading";
     index.className = "app-feature-index";
     index.textContent = "0" + (i + 1) + " / 04";
     title.textContent = appHeadings[i].textContent;
-    feature.append(index, title);
+    heading.append(index, title);
+    feature.append(heading);
     device.className = "phone app-mobile-phone";
     device.setAttribute("aria-hidden", "true");
     screenFrame.className = "screens";
@@ -208,8 +214,9 @@
     description.className = "app-feature-copy";
     description.textContent = appDescriptions[i].textContent;
     feature.append(description);
-    appMobile.append(feature);
-    mobileFeatures.push(feature);
+    step.append(feature);
+    appMobile.append(step);
+    mobileFeatureSteps.push({ step: step, feature: feature });
   });
   var mobileCta = document.createElement("div"),
     mobileCtaLink = document.createElement("a"),
@@ -414,27 +421,31 @@
     p = prog("app");
     if (vw <= 780) {
       var mobileTrackTop = appMobile.getBoundingClientRect().top + y;
-      mobileFeatures.forEach(function (feature, i) {
+      mobileFeatureSteps.forEach(function (item, i) {
+        var feature = item.feature;
         if (i === 0) {
           feature.style.transform = "translate3d(0,0,0)";
           return;
         }
-        var featureTop = mobileTrackTop + feature.offsetTop,
-          enter = reduce ? 1 : ease(seg(y, featureTop, featureTop + vh * 0.32));
+        var featureTop = mobileTrackTop + item.step.offsetTop,
+          enter = reduce
+            ? 1
+            : ease(seg(y, featureTop - vh * 0.3, featureTop + vh * 0.08));
         feature.style.transform = "translate3d(" + (1 - enter) * 100 + "%,0,0)";
       });
     } else {
-      mobileFeatures.forEach(function (feature) {
-        feature.style.transform = "";
+      mobileFeatureSteps.forEach(function (item) {
+        item.feature.style.transform = "";
       });
     }
     var rise = ease(seg(p, 0, 0.14));
     phoneWrap.style.transform =
       "translate3d(0," + (1 - rise) * vh * 0.5 + "px,0)";
     appText.style.opacity = rise;
-    var f = seg(p, 0.14, 0.9) * 3;
+    var f = seg(p, 0.08, 0.96) * 4;
     var activeScreen = Math.min(Math.floor(f), screens.length - 1),
-      screenProgress = ease(f - activeScreen),
+      stageProgress = f - activeScreen,
+      screenProgress = ease(seg(stageProgress, 0.7, 1)),
       copyExit = ease(seg(screenProgress, 0.2, 0.52)),
       copyEnter = ease(seg(screenProgress, 0.48, 0.8)),
       copyShift = vw <= 780 ? 34 : 180;
@@ -444,33 +455,33 @@
         o = cl(1 - a, 0, 1);
       screens[i].style.opacity =
         i === activeScreen || i === activeScreen + 1 ? 1 : 0;
-      screens[i].style.clipPath =
-        i === activeScreen + 1
-          ? "inset(" + (1 - screenProgress) * 100 + "% 0 0 0)"
-          : "inset(0)";
+      screens[i].style.clipPath = "inset(0)";
       screens[i].style.transform =
-        "translate3d(0," +
-        (i === activeScreen + 1 ? (1 - screenProgress) * 4 : 0) +
-        "%,0) scale(" +
-        (i === activeScreen + 1 ? 0.98 + screenProgress * 0.02 : 1) +
-        ")";
+        "translate3d(" +
+        (i === activeScreen + 1 ? (1 - screenProgress) * 100 : 0) +
+        "%,0,0)";
       [appHeadings[i], appDescriptions[i]].forEach(function (el) {
+        var isCurrent = i === activeScreen,
+          isNext = i === activeScreen + 1,
+          opacity = isCurrent ? 1 - copyExit : isNext ? copyEnter : 0;
         if (vw <= 780) {
-          var isCurrent = i === activeScreen,
-            isNext = i === activeScreen + 1,
-            opacity = isCurrent ? 1 - copyExit : isNext ? copyEnter : 0;
           el.style.opacity = opacity;
           el.style.transform = "translate3d(0,0,0)";
         } else {
-          el.style.opacity = cl(1 - a * 1.7, 0, 1);
-          el.style.transform = "translate3d(0," + -d * copyShift + "px,0)";
+          var copyY = isCurrent
+            ? -copyExit * copyShift
+            : isNext
+              ? (1 - copyEnter) * copyShift
+              : 0;
+          el.style.opacity = opacity;
+          el.style.transform = "translate3d(0," + copyY + "px,0)";
         }
       });
       ticks[i].style.width = 6 + 30 * o + "px";
       ticks[i].style.opacity = 0.25 + 0.65 * o;
     }
-    var i0 = Math.min(Math.floor(f), 2),
-      tq = f - i0;
+    var i0 = Math.min(Math.floor(f), BG.length - 2),
+      tq = cl(f - i0, 0, 1);
     app.style.background =
       "rgb(" +
       [0, 1, 2].map(function (q) {

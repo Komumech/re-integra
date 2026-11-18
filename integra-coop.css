@@ -846,7 +846,7 @@ main {
 
 /* app */
 #app {
-  height: 430svh;
+  height: 650svh;
   background: #f27b18;
 }
 .split {
@@ -1238,8 +1238,13 @@ footer {
     display: none;
   }
   .app-mobile {
-    display: grid;
+    display: block;
     position: relative;
+  }
+  .app-feature-step {
+    position: relative;
+    height: 240svh;
+    margin-bottom: -100svh;
   }
   .app-feature {
     display: grid;
@@ -1247,7 +1252,6 @@ footer {
     top: 0;
     height: 100svh;
     min-height: 100svh;
-    margin-bottom: -12svh;
     grid-template-rows: auto minmax(0, 1fr) auto;
     align-items: center;
     gap: clamp(18px, 3svh, 28px);
@@ -1256,18 +1260,6 @@ footer {
     background: var(--feature-bg, #f3f6f8);
     color: var(--ink);
     will-change: transform;
-  }
-  .app-feature:nth-child(1) {
-    z-index: 1;
-  }
-  .app-feature:nth-child(2) {
-    z-index: 2;
-  }
-  .app-feature:nth-child(3) {
-    z-index: 3;
-  }
-  .app-feature:nth-child(4) {
-    z-index: 4;
   }
   .app-feature h2 {
     max-width: 12em;
