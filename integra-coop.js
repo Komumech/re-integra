@@ -38,13 +38,12 @@
       join: 0,
     },
     DARK = { 0: 1, 1: 1, 2: 1, 5: 1, 7: 1 };
-  var progUntil = 0,
+  var programmaticScroll = false,
     S = {},
     vh,
     vw,
     y = 0,
     ty = 0,
-    lastSet = 0,
     menuOpen = false;
 
   /* ---- words & shapes ---- */
@@ -297,6 +296,7 @@
       });
     } else {
       var p = prog("stories");
+      programmaticScroll = true;
       ty = cl(
         S.stories.top +
           cl(p - 1 / (storyCards.length - 1), 0, 1) * (S.stories.h - vh),
@@ -313,6 +313,7 @@
       });
     } else {
       var p = prog("stories");
+      programmaticScroll = true;
       ty = cl(
         S.stories.top +
           cl(p + 1 / (storyCards.length - 1), 0, 1) * (S.stories.h - vh),
@@ -548,20 +549,29 @@
     }
   }
 
-  /* ---- smooth, continuous scrolling (no gestures, no stops) ---- */
+  /* ---- scripted scrolling; native touch scroll stays in control ---- */
   function go(id) {
     ty = cl(S[id].top + LAND[id] * (S[id].h - vh), 0, maxY);
+    if (vw <= 780) {
+      programmaticScroll = false;
+      scrollTo({ top: ty, behavior: reduce ? "auto" : "smooth" });
+    } else {
+      programmaticScroll = true;
+    }
   }
   function frame(now) {
     var dt = Math.min(0.05, (now - (frame.t || now)) / 1000);
     frame.t = now;
-    if (!reduce) y += (ty - y) * (1 - Math.exp(-dt * 8));
-    else y = ty;
-    if (Math.abs(ty - y) < 0.1) y = ty;
-    if (Math.abs((window.pageYOffset || 0) - y) > 0.4) {
-      lastSet = y;
-      progUntil = now + 160;
-      scrollTo(0, y);
+    if (programmaticScroll) {
+      if (!reduce) y += (ty - y) * (1 - Math.exp(-dt * 8));
+      else y = ty;
+      if (Math.abs(ty - y) < 0.1) {
+        y = ty;
+        programmaticScroll = false;
+      }
+      if (Math.abs((window.pageYOffset || 0) - y) > 0.4) scrollTo(0, y);
+    } else {
+      y = ty = window.pageYOffset || 0;
     }
     if (frame.last !== y) {
       frame.last = y;
@@ -574,6 +584,7 @@
     function (e) {
       if (menuOpen || e.ctrlKey) return;
       e.preventDefault();
+      programmaticScroll = true;
       ty = cl(
         ty + e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? vh : 1),
         0,
@@ -586,11 +597,19 @@
     "scroll",
     function () {
       /* touch, scrollbar, anything native */
-      var sy = window.pageYOffset || 0;
-      if (performance.now() < progUntil || Math.abs(ty - y) > 0.5) return;
-      if (Math.abs(sy - lastSet) > 2) {
-        y = ty = sy;
-      }
+      if (programmaticScroll) return;
+      y = ty = window.pageYOffset || 0;
+      frame.last = -1;
+    },
+    { passive: true },
+  );
+  addEventListener(
+    "touchstart",
+    function () {
+      if (!programmaticScroll) return;
+      programmaticScroll = false;
+      y = ty = window.pageYOffset || 0;
+      frame.last = -1;
     },
     { passive: true },
   );
@@ -606,22 +625,26 @@
     else if (k === "PageDown" || (k === " " && !e.shiftKey)) d = vh * 0.85;
     else if (k === "PageUp" || (k === " " && e.shiftKey)) d = -vh * 0.85;
     else if (k === "Home") {
+      programmaticScroll = true;
       ty = 0;
       e.preventDefault();
       return;
     } else if (k === "End") {
+      programmaticScroll = true;
       ty = maxY;
       e.preventDefault();
       return;
     }
     if (d) {
       e.preventDefault();
+      programmaticScroll = true;
       ty = cl(ty + d, 0, maxY);
     }
   });
   addEventListener("resize", function () {
     measure();
     centerMobileStoryLoop();
+    programmaticScroll = false;
     y = ty = cl(window.pageYOffset || 0, 0, maxY);
     frame.last = -1;
   });
