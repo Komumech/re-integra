@@ -1,4 +1,33 @@
 (function () {
+  document.querySelectorAll("footer .brand img").forEach(function (logo) {
+    logo.src = "integra-mark.png";
+  });
+
+  var joinModal = document.getElementById("joinModal");
+  function openJoinModal() {
+    if (!joinModal) return;
+    joinModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    var close = joinModal.querySelector(".join-modal-close");
+    if (close) close.focus();
+  }
+  function closeJoinModal() {
+    if (!joinModal) return;
+    joinModal.hidden = true;
+    document.body.style.overflow = "";
+  }
+  document.querySelectorAll(".join-integra").forEach(function (button) {
+    button.addEventListener("click", openJoinModal);
+  });
+  if (joinModal) {
+    joinModal.querySelectorAll(".join-modal-close, .join-modal-backdrop").forEach(function (button) {
+      button.addEventListener("click", closeJoinModal);
+    });
+  }
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && joinModal && !joinModal.hidden) closeJoinModal();
+  });
+
   var $ = function (s, c) {
       return (c || document).querySelector(s);
     },
@@ -222,15 +251,22 @@
     mobileCtaIcon = document.createElement("img");
   mobileCta.className = "app-mobile-cta";
   mobileCtaLink.className = "btn btn-dark";
-  mobileCtaLink.href =
-    "https://play.google.com/store/apps/details?id=ng.integra.app&hl=en";
-  mobileCtaLink.target = "_blank";
-  mobileCtaLink.rel = "noopener";
+  mobileCtaLink.href = "#";
+  mobileCtaLink.type = "button";
   mobileCtaIcon.className = "play-icon";
   mobileCtaIcon.src = "play-store.svg";
   mobileCtaIcon.alt = "";
   mobileCtaIcon.setAttribute("aria-hidden", "true");
-  mobileCtaLink.append(mobileCtaIcon, document.createTextNode("Get the app"));
+  var mobileAppleIcon = document.createElement("img");
+  mobileAppleIcon.className = "apple-icon";
+  mobileAppleIcon.src = "apple-store.svg";
+  mobileAppleIcon.alt = "";
+  mobileAppleIcon.setAttribute("aria-hidden", "true");
+  mobileCtaLink.append(mobileAppleIcon, mobileCtaIcon, document.createTextNode("Join INTEGRA"));
+  mobileCtaLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    openJoinModal();
+  });
   mobileCta.append(mobileCtaLink);
   appMobile.append(mobileCta);
   for (var copyIndex = 0; copyIndex < 2; copyIndex++) {
