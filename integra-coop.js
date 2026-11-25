@@ -1,8 +1,4 @@
 (function () {
-  document.querySelectorAll("footer .brand img").forEach(function (logo) {
-    logo.src = "integra-mark.png";
-  });
-
   var joinModal = document.getElementById("joinModal");
   function openJoinModal() {
     if (!joinModal) return;
@@ -476,8 +472,7 @@
       });
     }
     var rise = ease(seg(p, 0, 0.14));
-    phoneWrap.style.transform =
-      "translate3d(0," + (1 - rise) * vh * 0.5 + "px,0)";
+    phoneWrap.style.transform = "translate3d(0,0,0)";
     appText.style.opacity = rise;
     var f = seg(p, 0.08, 0.96) * 4;
     var activeScreen = Math.min(Math.floor(f), screens.length - 1),
