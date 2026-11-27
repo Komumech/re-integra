@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <!--
   IMAGES TO REPLACE
-  Hero, join and first menu photo use --img-event; reach, the trust-section banner and second menu photo use --img-group.
-  Product cards use local image files. Placeholder images remain in the app preview, trust cards and member stories.
-  To replace a placeholder, change its src="" to your own image URL or file.
+  Hero, join and first menu photo use --img-event; the second menu photo uses --img-group.
+  The reach section randomly uses integra1.jpg or integra2.jpg, and the trust banner uses img1.jpeg.
+  Product cards and member testimonials use local files.
 -->
 <link rel="stylesheet" href="integra-coop.css">
 </head>
@@ -72,12 +72,10 @@
   <div class="hero-photo" id="heroPhoto"><i class="cover" style="background-image:var(--img-event)"></i></div>
   <div class="hero-dim"></div><div class="hero-shade" id="heroShade"></div>
   <div class="hero-copy" id="heroCopy">
-    <a class="pill" href="https://bit.ly/INTEGRA2026REPORT" target="_blank" rel="noopener"><i><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 13V8M8 13V3M13 13V6"/></svg></i>Download Impact Report</a>
     <h1>Build Wealth. Grow Together.</h1>
     <p class="lede">Save, access credit, lend and invest in a thriving financial ecosystem powered by community.</p>
     <div class="btns">
       <button class="btn btn-light join-integra" type="button"><img class="play-icon" src="play-store.svg" alt="" aria-hidden="true"><img class="apple-icon" src="apple-store.svg" alt="" aria-hidden="true">Join INTEGRA</button>
-      <button class="btn btn-line join-integra" type="button">Download App</button>
     </div>
   </div>
 </section>
@@ -90,8 +88,8 @@
 <!-- 3 REACH: image grows from the centre -->
 <section id="reach" class="sec">
   <div class="pin">
-    <div class="reach-img" id="reachImg"><i class="cover" id="reachBg" style="background-image:var(--img-group)"></i><div class="veil" id="veil"></div></div>
-    <div class="reach-copy" id="reachCopy"><h2>Building for collective wealth creation.</h2><p class="lede">Incorporated in 2023, INTEGRA operates under a cooperative model managed by INTEGRA Synergia Limited. Members save, access credit and build financial opportunities together.</p></div>
+    <div class="reach-img" id="reachImg"><i class="cover" id="reachBg" style="background-image:url(image.png)"></i><div class="veil" id="veil"></div></div>
+    <div class="reach-copy" id="reachCopy"><h2>Building for collective wealth creation.</h2><p class="lede">Members save, access credit and build financial opportunities together.</p></div>
     <div class="stats4">
       <div class="stat"><strong data-count="25" data-pre="₦" data-suf="B+">₦25B+</strong><span>In member savings targeted by 2030</span></div>
       <div class="stat"><strong data-count="100" data-suf="%">100%</strong><span>Performing loans since inception</span></div>
@@ -104,12 +102,12 @@
 <!-- 4 PATHS: cards rise, then slide sideways -->
 <section id="paths" class="sec top-round">
   <div class="pin">
-    <div class="paths-head"><h2>Choose your path to wealth.</h2><p class="lede">Set a financial goal and let INTEGRA empower you towards it—with savings, credit, investments and advice shaped around your needs.</p></div>
+    <div class="paths-head"><h2>Choose your path to wealth.</h2><p class="lede">INTEGRA lets you set a financial goal and empowers you towards it.</p></div>
     <div class="track" id="track">
-      <a class="pcard" href="https://integra.ng/app/auth/" target="_blank" rel="noopener"><img src="savings.jpg" alt=""><div><h3>Automated goal savings</h3><p>Save on your schedule, set a target and build your balance. Members can also save together and earn membership dividends.</p><b>Start saving</b></div></a>
-      <a class="pcard" href="https://integra.ng/app/auth/" target="_blank" rel="noopener"><img src="loans.jpg" alt=""><div><h3>Low-interest loans</h3><p>Access peer-to-peer loans for business, personal needs or emergencies, with repayment plans that fit your cash flow.</p><b>Get a loan</b></div></a>
-      <a class="pcard" href="https://integra.ng/app/auth/" target="_blank" rel="noopener"><img src="invest.jpg" alt=""><div><h3>Pooled investments</h3><p>Join member opportunities in business, real estate, sustainable ventures and financial instruments.</p><b>Start investing</b></div></a>
-      <a class="pcard" href="https://integra.ng/contact.html" target="_blank" rel="noopener"><img src="advisory.jpg" alt=""><div><h3>Financial advisory</h3><p>Get expert advice and practical workshops to help you build lasting wealth.</p><b>Book a session</b></div></a>
+      <a class="pcard join-integra" href="#join"><img src="savings.jpg" alt=""><div><h3>Automated goal savings</h3><p>Save on your schedule, set a target and build your balance. Members can also save together and earn membership dividends.</p><b>Start saving</b></div></a>
+      <a class="pcard join-integra" href="#join"><img src="loans.jpg" alt=""><div><h3>Low-interest loans</h3><p>Access peer-to-peer loans for business, personal needs or emergencies, with repayment plans that fit your cash flow.</p><b>Get a loan</b></div></a>
+      <a class="pcard join-integra" href="#join"><img src="invest.jpg" alt=""><div><h3>Pooled investments</h3><p>Join member opportunities in business, sustainable ventures and financial instruments.</p><b>Start investing</b></div></a>
+      <a class="pcard join-integra" href="#join"><img src="advisory.jpg" alt=""><div><h3>Financial advisory</h3><p>Get expert advice and practical workshops to help you build lasting wealth.</p><b>Book a session</b></div></a>
     </div>
   </div>
 </section>
@@ -121,34 +119,27 @@
       <div><h2>Save on your schedule.</h2></div>
       <div><h2>Lend or take loans when it matters.</h2></div>
       <div><h2>Invest together.</h2></div>
-      <div><h2>Get financial education and build money circles.</h2></div>
+      <div><h2>Get financial education.</h2></div>
+      <div><h2>Build money circles.</h2></div>
     </div>
     <div class="phone-wrap" id="phoneWrap"><div class="phone"><div class="screens">
-      <!-- To use real screenshots, put <img src="your-screenshot.png" alt=""> inside a .screen instead of the drawn UI -->
-      <div class="screen" style="--sbg:#EEF3F8"><h4>Savings</h4><div class="mut">Total saved</div><div class="big">₦248,500</div>
-        <div class="card"><b>Rent <span>80%</span></b><div class="bar"><i style="width:80%"></i></div></div>
-        <div class="card"><b>School fees <span>45%</span></b><div class="bar"><i style="width:45%"></i></div></div>
-        <div class="card"><b>Holiday <span>20%</span></b><div class="bar"><i style="width:20%"></i></div></div></div>
-      <div class="screen" style="--sbg:#EEF0FA"><h4>Loans</h4><div class="mut">You can borrow up to</div><div class="big">₦500,000</div>
-        <div class="card"><b>Business loan <span>Active</span></b><div class="bar"><i style="width:62%"></i></div><div class="mut" style="margin-top:.6em">Next repayment in 9 days</div></div>
-        <div class="card"><b>Repaid so far <span>₦186,000</span></b></div><span class="chip">Apply now</span></div>
-      <div class="screen" style="--sbg:#EDF2F6"><h4>Invest</h4><div class="mut">Pooled real estate plan</div><div class="big">12 months</div>
-        <div class="card"><svg viewBox="0 0 200 80" width="100%" fill="none"><path d="M5 70 L45 55 L85 60 L125 35 L165 25 L195 10" stroke="#000AC2" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="card"><b>Your share <span>₦150,000</span></b></div><span class="chip">Invest</span></div>
-      <div class="screen" style="--sbg:#F1F3F5"><h4>Learn</h4><div class="mut">Up next</div>
-        <div class="card"><b>Budgeting basics <span>6 min</span></b></div>
-        <div class="card"><b>Managing debt <span>8 min</span></b></div>
-        <div class="card"><b>Member workshop <span>Sat</span></b><div class="mut" style="margin-top:.4em">Growing your net worth</div></div></div>
+      <!-- Replace each src="" below with your app mockup image -->
+      <div class="screen"><img src="save.jpg" alt="Savings app screen"></div>
+      <div class="screen"><img src="loan.jpg" alt="Loans app screen"></div>
+      <div class="screen"><img src="invest1.jpg" alt="Invest app screen"></div>
+      <div class="screen"><img src="education.jpg" alt="Financial education app screen"></div>
+      <div class="screen"><img src="Ajo.jpg" alt="Ajo money circles app screen"></div>
     </div></div></div>
     <div class="app-detail" id="appText">
       <div class="copy app-descriptions">
         <div><p class="lede">Save for rent, school fees or a trip. Earn returns on Goal or Target Savings, receive membership dividends, and set up automatic deposits from your card or bank account.</p></div>
         <div><p class="lede">Lend to a business and earn, or apply for a loan with a repayment plan designed around your cash flow. Eligibility, rates and terms apply.</p></div>
         <div><p class="lede">Join a pool of vetted opportunities and sustainable ventures, or subscribe to Member Fixed Savings (MFS).</p></div>
-        <div><p class="lede">Join MoneyWise webinars on budgeting and growing your net worth, book financial advisory sessions, and attend workshops and open houses. Explore Ajo and Esusu money circles, plus shared and group accounts.</p></div>
+        <div><p class="lede">Join MoneyWise webinars on budgeting and growing your net worth, book financial advisory sessions, and attend workshops and open houses.</p></div>
+        <div><p class="lede">Build money circles through Ajo and Esusu alongside shared and group accounts.</p></div>
       </div>
       <div class="app-controls">
-        <div class="ticks"><i></i><i></i><i></i><i></i></div>
+        <div class="ticks"><i></i><i></i><i></i><i></i><i></i></div>
         <div class="btns"><button class="btn btn-dark join-integra" type="button"><img class="play-icon" src="play-store.svg" alt="" aria-hidden="true"><img class="apple-icon" src="apple-store.svg" alt="" aria-hidden="true">Join INTEGRA</button></div>
       </div>
     </div>
@@ -158,14 +149,6 @@
 
 <!-- 6 PILLARS -->
 <section id="pillars" class="sec top-round">
-  <h2 data-par="-.05">How we keep your money safe.</h2>
-  <p class="lede" data-par="-.03">Three rules every member can check for themselves.</p>
-  <div class="pil">
-    <figure data-par=".1"><img data-par="-.08" src="https://placehold.co/900x1100/1B2A6B/FFFFFF?text=Regulated" alt=""><figcaption><h3>Registered and regulated</h3><p>Operating under Nigerian cooperative law.</p></figcaption></figure>
-    <figure data-par="-.06"><img data-par="-.08" src="https://placehold.co/1000x1300/000AC2/FFFFFF?text=Powered+by+Community" alt=""><figcaption><h3>Powered by Community</h3><p>One member, one vote on how funds are used.</p></figcaption></figure>
-    <figure data-par=".1"><img data-par="-.08" src="https://placehold.co/900x1100/0E3B7A/FFFFFF?text=Vetted" alt=""><figcaption><h3>Vetted investments</h3><p>Every opportunity is reviewed before it is offered.</p></figcaption></figure>
-  </div>
-  <div class="wide" data-par=".04"><i data-par="-.1" style="background-image:var(--img-group)"></i></div>
   <div class="audiences">
     <h2>INTEGRA is also for</h2>
     <p class="lede">Groups who want to pool resources, support one another and build shared financial opportunities.</p>
@@ -177,6 +160,8 @@
       <article><span>05</span><div><h3>Social &amp; Investment Clubs</h3><p>Groups pooling funds to save, invest and achieve shared financial goals.</p></div></article>
     </div>
   </div>
+
+  <div class="wide" data-par=".04"><i data-par="-.1" style="background-image:url(image.png)" ></i></div>
 </section>
 
 <!-- 7 STORIES -->
@@ -190,14 +175,44 @@
       </div>
     </div>
     <div class="cards3" id="storiesTrack">
-      <div class="scard" data-par=".14"><img data-par="-.1" src="https://placehold.co/900x1200/D6E4F4/000AC2?text=Member+photo" alt=""><div><p>“It has helped me develop a consistent saving habit, even during challenging months.”</p><span>Glory</span></div></div>
-      <div class="scard" data-par="-.08"><img data-par="-.1" src="https://placehold.co/900x1200/C9D8EE/000AC2?text=Member+photo" alt=""><div><p>“I’ve seen real improvement in my mindset, finances, and daily decision-making.”</p><span>Idara</span></div></div>
-      <div class="scard" data-par=".14"><img data-par="-.1" src="https://placehold.co/900x1200/D9DEF5/000AC2?text=Member+photo" alt=""><div><p>“I have learnt how to save. I have been able to access loans to boost my personal development.”</p><span>Victor</span></div></div>
+      <div class="scard">
+        <video data-src="vid%20(1).mp4" poster="testimonial-1.jpg" preload="none" playsinline aria-label="INTEGRA member testimonial 1"></video>
+        <button class="story-play" type="button" aria-label="Play Glory's testimonial">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="story-icon-play" d="M8 5v14l11-7z"></path><g class="story-icon-pause"><path d="M7 5h4v14H7zM14 5h4v14h-4z"></path></g></svg>
+        </button>
+        <span class="story-video-status" role="status" aria-live="polite"></span>
+        <div><p>“It has helped me develop a consistent saving habit, even during challenging months.”</p><span>Glory</span></div>
+      </div>
+      <div class="scard">
+        <video data-src="vid%20(5).mp4" poster="testimonial-2.jpg" preload="none" playsinline aria-label="INTEGRA member testimonial 2"></video>
+        <button class="story-play" type="button" aria-label="Play Idara's testimonial">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="story-icon-play" d="M8 5v14l11-7z"></path><g class="story-icon-pause"><path d="M7 5h4v14H7zM14 5h4v14h-4z"></path></g></svg>
+        </button>
+        <span class="story-video-status" role="status" aria-live="polite"></span>
+        <div><p>“I’ve seen real improvement in my mindset, finances, and daily decision-making.”</p><span>Idara</span></div>
+      </div>
+      <div class="scard">
+        <video data-src="vid%20(3).mp4" poster="testimonial-3.jpg" preload="none" playsinline aria-label="INTEGRA member testimonial 3"></video>
+        <button class="story-play" type="button" aria-label="Play Victor's testimonial">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="story-icon-play" d="M8 5v14l11-7z"></path><g class="story-icon-pause"><path d="M7 5h4v14H7zM14 5h4v14h-4z"></path></g></svg>
+        </button>
+        <span class="story-video-status" role="status" aria-live="polite"></span>
+        <div><p>“I have learnt how to save. I have been able to access loans to boost my personal development.”</p><span>Victor</span></div>
+      </div>
+      <div class="scard">
+        <video data-src="vid%20(4).mp4" poster="testimonial-4.jpg" preload="none" playsinline aria-label="INTEGRA member testimonial 4"></video>
+        <button class="story-play" type="button" aria-label="Play member testimonial 4">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path class="story-icon-play" d="M8 5v14l11-7z"></path><g class="story-icon-pause"><path d="M7 5h4v14H7zM14 5h4v14h-4z"></path></g></svg>
+        </button>
+        <span class="story-video-status" role="status" aria-live="polite"></span>
+        <div><p>Member testimonial</p><span>INTEGRA Member</span></div>
+      </div>
     </div>
+    <div class="story-scrollbar" aria-hidden="true"><span></span></div>
   </div>
 </section>
 
-<section id="faq" class="sec top-round"><h2 data-par="-.05">Frequently asked questions.</h2><div><div class="q open"><button aria-expanded="true">How does INTEGRA work?<b>+</b></button><div class="a"><p>INTEGRA is a member-focused cooperative. Members can save, access credit, lend and join investment opportunities through the cooperative.</p></div></div><div class="q"><button aria-expanded="false">Do I need experience to invest?<b>+</b></button><div class="a"><p>No. Opportunities and terms are shared with members before they decide. You can also book a financial advisory session to discuss your goals.</p></div></div><div class="q"><button aria-expanded="false">How do I join?<b>+</b></button><div class="a"><p>Download the INTEGRA app using the Android or iOS option, then follow the steps to create your account and explore membership.</p></div></div><div class="q"><button aria-expanded="false">How are member contributions handled?<b>+</b></button><div class="a"><p>INTEGRA operates under a cooperative model for members. It partners with CBN-approved banks, NDIC-insured financial institutions and SEC-licensed fund or asset managers to offer services within the community.</p></div></div><div class="q"><button aria-expanded="false">What can I borrow?<b>+</b></button><div class="a"><p>Loan eligibility, rates, limits and repayment terms depend on applicable conditions and approval. Check the app or contact the team for current details.</p></div></div><a class="faq-more" href="https://integra.ng/faq.html" target="_blank" rel="noopener">See more FAQs <span aria-hidden="true">→</span></a></div></section>
+<section id="faq" class="sec top-round"><h2 data-par="-.05">Frequently asked questions.</h2><div><div class="q open"><button aria-expanded="true">How does INTEGRA work?<b>+</b></button><div class="a"><p>INTEGRA is a member-focused cooperative. Members can save, access credit, lend and join investment opportunities through the cooperative.</p></div></div><div class="q"><button aria-expanded="false">Do I need experience to invest?<b>+</b></button><div class="a"><p>No. Opportunities and terms are shared with members before they decide. You can also book a financial advisory session to discuss your goals.</p></div></div><div class="q"><button aria-expanded="false">How do I join?<b>+</b></button><div class="a"><p>Download the INTEGRA app using the Android or iOS option, then follow the steps to create your account and explore membership.</p></div></div><div class="q"><button aria-expanded="false">How are member contributions handled?<b>+</b></button><div class="a"><p>INTEGRA operates under a cooperative model for members. It partners with CBN-approved banks, NDIC-insured financial institutions and SEC-licensed fund or asset managers to offer services within the community.</p></div></div><div class="q"><button aria-expanded="false">What can I borrow?<b>+</b></button><div class="a"><p>Loan eligibility, rates, limits and repayment terms depend on applicable conditions and approval. Check the app or contact the team for current details.</p></div></div><a class="faq-more" href="https://integra.ng/faq.html" target="_blank" rel="noopener">More FAQs <span aria-hidden="true">→</span></a></div></section>
 
 <!-- 8 JOIN -->
 <section id="join" class="sec top-round">
@@ -213,7 +228,7 @@
   <div class="f-grid">
     <div><a class="brand" href="#" data-go="hero"><img src="integra-lockup-white.png" alt="INTEGRA"></a><p>Build Wealth. Grow Together.</p></div>
     <div><h4>Help and services</h4><a href="https://integra.ng/about.html" target="_blank" rel="noopener">How does it work</a><a href="https://integra.ng/faq.html" target="_blank" rel="noopener">FAQs</a><a href="https://integra.ng/contact.html" target="_blank" rel="noopener">Contact</a></div>
-    <div><h4>Explore</h4><a href="https://integra.ng/blog.html" target="_blank" rel="noopener">Blog</a><a href="#" data-go="paths">Products</a><a href="#" data-go="app">The app</a><a href="#" data-go="pillars">Community</a></div>
+    <div><h4>Explore</h4><a href="https://integra.ng/blog.html" target="_blank" rel="noopener">Blog</a><a href="#" data-go="paths">Products</a><a href="#" data-go="app">The App</a><a href="#" data-go="pillars">Community</a></div>
     <div><h4>Connect with us</h4><a href="mailto:support@integra.ng">support@integra.ng</a><a href="tel:+2349015376307">+234 901 537 6307</a><p class="f-address">5, Kwaji Close, Maitama, FCT-Abuja, Nigeria</p></div>
     <div>
       <h4>Follow</h4>
@@ -231,9 +246,7 @@
     </div>
   </div>
   <div class="f-legal">
-    <p>Incorporated in 2023, INTEGRA operates under a cooperative model and is managed by INTEGRA Synergia Limited. We do not solicit funds from the general public, and contributions are reserved for our members only.</p>
-    <p>INTEGRA partners with CBN-approved banks, NDIC-insured financial institutions, and SEC-licensed fund/asset managers to offer services within our community.</p>
-    <p>Product availability, rates, eligibility, and terms are subject to applicable conditions and approval.</p>
+    <p style="max-width: 90%; text-wrap:wrap ;">Incorporated in 2023, INTEGRA Synergia Limited serves members through its cooperative and does not solicit public funds; member contributions are reserved for members. Partners include CBN-approved banks, NDIC-insured financial institutions, and SEC-licensed fund/asset managers.</p>
   </div>
   <div class="f-bot">&copy; 2026 INTEGRA Synergia Limited. All rights reserved.</div>
 </footer>

@@ -13,7 +13,10 @@
     document.body.style.overflow = "";
   }
   document.querySelectorAll(".join-integra").forEach(function (button) {
-    button.addEventListener("click", openJoinModal);
+    button.addEventListener("click", function (event) {
+      if (button.tagName === "A") event.preventDefault();
+      openJoinModal();
+    });
   });
   if (joinModal) {
     joinModal.querySelectorAll(".join-modal-close, .join-modal-backdrop").forEach(function (button) {
@@ -187,6 +190,9 @@
     veil = $("#veil"),
     reachCopy = $("#reachCopy"),
     stats = $$(".stat");
+  var reachImages = ["integra1.jpg", "integra2.jpg"];
+  reachBg.style.backgroundImage =
+    'url("' + reachImages[Math.floor(Math.random() * reachImages.length)] + '")';
   var track = $("#track"),
     pcards = $$(".pcard");
   var app = $("#app"),
@@ -199,11 +205,18 @@
     screens = $$(".screen"),
     ticks = $$(".ticks i"),
     storyTrack = $("#storiesTrack"),
+    storyScrollbarThumb = $(".story-scrollbar span"),
     storyCards = $$(".scard"),
     storyPrev = $("#storyPrev"),
     storyNext = $("#storyNext"),
     storyLoopWidth = 0;
-  var featureBackgrounds = ["#f3f6f8", "#e5edf0", "#f1eef7", "#eef2e1"];
+  var featureBackgrounds = [
+    "#f3f6f8",
+    "#e5edf0",
+    "#f1eef7",
+    "#eef2e1",
+    "#e6f2ed",
+  ];
   screens.forEach(function (screen, i) {
     var step = document.createElement("div"),
       feature = document.createElement("article"),
@@ -220,7 +233,7 @@
     step.style.zIndex = i + 1;
     heading.className = "app-feature-heading";
     index.className = "app-feature-index";
-    index.textContent = "0" + (i + 1) + " / 04";
+    index.textContent = "0" + (i + 1) + " / 0" + screens.length;
     title.textContent = appHeadings[i].textContent;
     heading.append(index, title);
     feature.append(heading);
@@ -273,14 +286,116 @@
       clone.querySelectorAll("[data-par]").forEach(function (el) {
         el.removeAttribute("data-par");
       });
+      clone.querySelectorAll(".story-play").forEach(function (button) {
+        button.tabIndex = -1;
+      });
       storyTrack.append(clone);
     });
   }
-  var BG = ["#F27B18", "#D8C5E4", "#E3FF6A", "#C9DFE9"].map(function (h) {
-    return [1, 3, 5].map(function (q) {
-      return parseInt(h.substr(q, 2), 16);
+  $$("#storiesTrack video").forEach(function (video) {
+    var card = video.closest(".scard"),
+      button = $(".story-play", card),
+      status = $(".story-video-status", card),
+      playLabel = button.getAttribute("aria-label"),
+      pauseLabel = playLabel.replace(/^Play /, "Pause ");
+
+    function setStatus(message, loading) {
+      status.textContent = message;
+      card.classList.toggle("is-loading", Boolean(loading));
+    }
+
+    function setPlaying(isPlaying) {
+      card.classList.toggle("is-playing", isPlaying);
+      button.setAttribute(
+        "aria-label",
+        isPlaying || card.classList.contains("is-loading")
+          ? pauseLabel
+          : playLabel,
+      );
+      if (!isPlaying && !video.error) setStatus("", false);
+    }
+
+    function loadFallback() {
+      var fallback = video.dataset.fallback;
+      if (video.dataset.playRequested !== "true") return;
+      if (!fallback || video.dataset.fallbackTried) {
+        setStatus("This video could not be loaded. Tap to retry.", false);
+        card.classList.remove("is-playing");
+        button.setAttribute("aria-label", playLabel);
+        return;
+      }
+
+      video.dataset.fallbackTried = "true";
+      video.dataset.src = fallback;
+      video.removeAttribute("src");
+      video.src = fallback;
+      video.load();
+      setStatus("Loading video...", true);
+      video.play().catch(function () {
+        setStatus("This video could not be loaded. Tap to retry.", false);
+      });
+    }
+
+    video.addEventListener("canplay", function () {
+      if (!video.paused) {
+        setStatus("", false);
+        setPlaying(true);
+      }
+    });
+    video.addEventListener("playing", function () {
+      setStatus("", false);
+      setPlaying(true);
+    });
+    video.addEventListener("waiting", function () {
+      if (!video.paused) setStatus("Loading video...", true);
+    });
+    video.addEventListener("pause", function () {
+      setPlaying(false);
+    });
+    video.addEventListener("ended", function () {
+      video.dataset.playRequested = "false";
+      setPlaying(false);
+    });
+    video.addEventListener("error", loadFallback);
+    video.addEventListener("click", function () {
+      button.click();
+    });
+    button.addEventListener("click", function () {
+      if (!video.paused || card.classList.contains("is-loading")) {
+        video.dataset.playRequested = "false";
+        video.pause();
+        setStatus("", false);
+        setPlaying(false);
+        return;
+      }
+
+      $$("#storiesTrack video").forEach(function (otherVideo) {
+        if (otherVideo !== video) {
+          otherVideo.dataset.playRequested = "false";
+          otherVideo.pause();
+        }
+      });
+      video.dataset.playRequested = "true";
+      if (!video.getAttribute("src")) {
+        video.preload = "metadata";
+        video.src = video.dataset.src;
+        video.load();
+      }
+      setStatus("Loading video...", true);
+      button.setAttribute("aria-label", pauseLabel);
+      video.play().catch(function () {
+        if (video.error) loadFallback();
+        else setStatus("Playback was blocked. Tap play to try again.", false);
+      });
     });
   });
+  var BG = ["#F27B18", "#D8C5E4", "#E3FF6A", "#C9DFE9", "#BFE6D4"].map(
+    function (h) {
+      return [1, 3, 5].map(function (q) {
+        return parseInt(h.substr(q, 2), 16);
+      });
+    },
+  );
   var par = $$("[data-par]").map(function (el) {
     return { el: el, f: parseFloat(el.dataset.par), base: 0 };
   });
@@ -302,10 +417,20 @@
       last.offsetLeft - first.offsetLeft + first.getBoundingClientRect().width
     );
   }
+  function updateStoryScrollbar() {
+    if (vw > 780 || !storyLoopWidth || !storyScrollbarThumb) return;
+    var progress =
+      ((storyTrack.scrollLeft - storyLoopWidth) % storyLoopWidth) /
+      storyLoopWidth;
+    if (progress < 0) progress += 1;
+    storyScrollbarThumb.style.transform =
+      "translateX(" + progress * 300 + "%)";
+  }
   function centerMobileStoryLoop() {
     if (vw <= 780) {
       storyLoopWidth = getStoryGroupWidth();
       storyTrack.scrollLeft = storyLoopWidth;
+      updateStoryScrollbar();
     }
   }
   storyTrack.addEventListener(
@@ -317,6 +442,7 @@
       } else if (storyTrack.scrollLeft > storyLoopWidth * 2) {
         storyTrack.scrollLeft -= storyLoopWidth;
       }
+      updateStoryScrollbar();
     },
     { passive: true },
   );
@@ -452,49 +578,37 @@
 
     /* app: centered phone and paired copy transition together */
     p = prog("app");
-    if (vw <= 780) {
-      var mobileTrackTop = appMobile.getBoundingClientRect().top + y;
-      mobileFeatureSteps.forEach(function (item, i) {
-        var feature = item.feature;
-        if (i === 0) {
-          feature.style.transform = "translate3d(0,0,0)";
-          return;
-        }
-        var featureTop = mobileTrackTop + item.step.offsetTop,
-          enter = reduce
-            ? 1
-            : ease(seg(y, featureTop - vh * 0.3, featureTop + vh * 0.08));
-        feature.style.transform = "translate3d(" + (1 - enter) * 100 + "%,0,0)";
-      });
-    } else {
-      mobileFeatureSteps.forEach(function (item) {
-        item.feature.style.transform = "";
-      });
-    }
+    mobileFeatureSteps.forEach(function (item) {
+      item.feature.style.transform = "";
+    });
     var rise = ease(seg(p, 0, 0.14));
     phoneWrap.style.transform = "translate3d(0,0,0)";
     appText.style.opacity = rise;
-    var f = seg(p, 0.08, 0.96) * 4;
-    var activeScreen = Math.min(Math.floor(f), screens.length - 1),
-      stageProgress = f - activeScreen,
+    var screenCount = screens.length,
+      f = seg(p, 0.06, 0.88) * (screenCount - 1);
+    var activeScreen = Math.min(Math.floor(f), screenCount - 1),
+      isLastScreen = activeScreen >= screenCount - 1,
+      stageProgress = isLastScreen ? 0 : f - activeScreen,
       screenProgress = ease(seg(stageProgress, 0.7, 1)),
       copyExit = ease(seg(screenProgress, 0.2, 0.52)),
       copyEnter = ease(seg(screenProgress, 0.48, 0.8)),
       copyShift = vw <= 780 ? 34 : 180;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < screenCount; i++) {
       var d = f - i,
         a = Math.abs(d),
         o = cl(1 - a, 0, 1);
       screens[i].style.opacity =
-        i === activeScreen || i === activeScreen + 1 ? 1 : 0;
+        i === activeScreen || (!isLastScreen && i === activeScreen + 1) ? 1 : 0;
       screens[i].style.clipPath = "inset(0)";
       screens[i].style.transform =
         "translate3d(" +
-        (i === activeScreen + 1 ? (1 - screenProgress) * 100 : 0) +
+        (!isLastScreen && i === activeScreen + 1
+          ? (1 - screenProgress) * 100
+          : 0) +
         "%,0,0)";
       [appHeadings[i], appDescriptions[i]].forEach(function (el) {
         var isCurrent = i === activeScreen,
-          isNext = i === activeScreen + 1,
+          isNext = !isLastScreen && i === activeScreen + 1,
           opacity = isCurrent ? 1 - copyExit : isNext ? copyEnter : 0;
         if (vw <= 780) {
           el.style.opacity = opacity;
