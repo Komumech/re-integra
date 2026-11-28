@@ -1644,9 +1644,6 @@ footer {
     align-items: flex-start;
     gap: 0.6rem;
   }
-  .paths-head .lede {
-    display: none;
-  }
   .pcard {
     height: min(62svh, 620px);
   }
@@ -1656,9 +1653,6 @@ footer {
   }
   .stat strong {
     font-size: clamp(1.8rem, min(9vw, 6svh), 3rem);
-  }
-  .reach-copy .lede {
-    display: none;
   }
   .cards3 {
     position: relative;
@@ -1821,7 +1815,6 @@ footer {
   }
 }
 @media (max-height: 520px) {
-  .lede,
   .hint {
     display: none;
   }
