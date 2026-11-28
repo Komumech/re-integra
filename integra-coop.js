@@ -190,9 +190,6 @@
     veil = $("#veil"),
     reachCopy = $("#reachCopy"),
     stats = $$(".stat");
-  var reachImages = ["integra1.jpg", "integra2.jpg"];
-  reachBg.style.backgroundImage =
-    'url("' + reachImages[Math.floor(Math.random() * reachImages.length)] + '")';
   var track = $("#track"),
     pcards = $$(".pcard");
   var app = $("#app"),
