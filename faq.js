@@ -221,9 +221,19 @@
       history.replaceState(null, "", "#" + a.dataset.cat);
     });
   });
+  var navEl = $(".faq-nav");
   function setCurrent(id) {
     navLinks.forEach(function (a) {
-      a.setAttribute("aria-current", a.dataset.cat === id ? "true" : "false");
+      var on = a.dataset.cat === id;
+      a.setAttribute("aria-current", on ? "true" : "false");
+      /* keep the active topic in view inside the pinned, separately scrolling list */
+      if (on && navEl.scrollHeight > navEl.clientHeight + 2 && getComputedStyle($(".faq-side")).position === "sticky") {
+        var top = a.offsetTop,
+          bottom = top + a.offsetHeight;
+        if (top < navEl.scrollTop + 8 || bottom > navEl.scrollTop + navEl.clientHeight - 40) {
+          navEl.scrollTo({ top: Math.max(0, top - navEl.clientHeight / 3), behavior: reduce ? "auto" : "smooth" });
+        }
+      }
     });
   }
   if ("IntersectionObserver" in window) {
@@ -241,10 +251,37 @@
   }
   setCurrent(groups[0] && groups[0].dataset.cat);
 
-  /* ?q= pre-fills the search */
-  var preset = new URLSearchParams(window.location.search).get("q");
-  if (preset) {
-    input.value = preset;
-    runSearch();
+  /* ---- floating "Topics" button: shows once the topic list has scrolled away ---- */
+  var topBtn = $("#faqTop"),
+    side = $(".faq-side"),
+    faqsSec = $("#faqs"),
+    ticking = false;
+  function updateTopBtn() {
+    ticking = false;
+    var s = side.getBoundingClientRect(),
+      f = faqsSec.getBoundingClientRect(),
+      vh = window.innerHeight;
+    topBtn.classList.toggle("show", s.bottom < 0 && f.bottom > vh * 0.6);
   }
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateTopBtn);
+      }
+    },
+    { passive: true },
+  );
+  window.addEventListener("resize", updateTopBtn);
+  topBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    side.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  });
+  updateTopBtn();
+
+  /* ?q= pre-fills the search; always run once so the counts match the markup */
+  var preset = new URLSearchParams(window.location.search).get("q");
+  if (preset) input.value = preset;
+  runSearch();
 })();
