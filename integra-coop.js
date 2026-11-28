@@ -278,20 +278,6 @@
   });
   mobileCta.append(mobileCtaLink);
   appMobile.append(mobileCta);
-  for (var copyIndex = 0; copyIndex < 2; copyIndex++) {
-    storyCards.forEach(function (card) {
-      var clone = card.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      clone.removeAttribute("data-par");
-      clone.querySelectorAll("[data-par]").forEach(function (el) {
-        el.removeAttribute("data-par");
-      });
-      clone.querySelectorAll(".story-play").forEach(function (button) {
-        button.tabIndex = -1;
-      });
-      storyTrack.append(clone);
-    });
-  }
   $$("#storiesTrack video").forEach(function (video) {
     var card = video.closest(".scard"),
       button = $(".story-play", card),
@@ -418,30 +404,21 @@
     );
   }
   function updateStoryScrollbar() {
-    if (vw > 780 || !storyLoopWidth || !storyScrollbarThumb) return;
-    var progress =
-      ((storyTrack.scrollLeft - storyLoopWidth) % storyLoopWidth) /
-      storyLoopWidth;
-    if (progress < 0) progress += 1;
+    if (vw > 780 || !storyScrollbarThumb) return;
+    var maxScroll = storyTrack.scrollWidth - storyTrack.clientWidth,
+      progress = maxScroll > 0 ? storyTrack.scrollLeft / maxScroll : 0;
     storyScrollbarThumb.style.transform =
       "translateX(" + progress * 300 + "%)";
   }
   function centerMobileStoryLoop() {
     if (vw <= 780) {
-      storyLoopWidth = getStoryGroupWidth();
-      storyTrack.scrollLeft = storyLoopWidth;
       updateStoryScrollbar();
     }
   }
   storyTrack.addEventListener(
     "scroll",
     function () {
-      if (vw > 780 || !storyLoopWidth) return;
-      if (storyTrack.scrollLeft < storyLoopWidth * 0.5) {
-        storyTrack.scrollLeft += storyLoopWidth;
-      } else if (storyTrack.scrollLeft > storyLoopWidth * 2) {
-        storyTrack.scrollLeft -= storyLoopWidth;
-      }
+      if (vw > 780) return;
       updateStoryScrollbar();
     },
     { passive: true },
