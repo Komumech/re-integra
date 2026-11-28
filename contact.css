@@ -1,0 +1,200 @@
+/* Contact page: only what the shared integra-coop.css doesn't already cover */
+
+#contact-hero {
+  position: relative;
+  height: min(82svh, 760px);
+  min-height: 460px;
+  overflow: hidden;
+  background: var(--black);
+  color: #fff;
+}
+#contact-hero .hero-photo {
+  top: 0;
+  height: 100%;
+}
+#contact-hero .hero-copy {
+  z-index: 2;
+}
+
+#contact {
+  background: var(--paper);
+  color: var(--ink);
+  margin-top: calc(-1 * clamp(20px, 2.6vw, 36px));
+  padding: clamp(90px, 16svh, 160px) var(--gx) clamp(120px, 20svh, 200px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+#contact .lede {
+  max-width: 26em;
+}
+.contact-list {
+  margin-top: clamp(28px, 5svh, 48px);
+  border-top: 1px solid rgba(23, 24, 28, 0.15);
+}
+.contact-list article {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(23, 24, 28, 0.15);
+}
+.contact-list article > span {
+  padding-top: 0.25rem;
+  color: var(--blue);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.contact-list h3 {
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+}
+.contact-list p {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  opacity: 0.75;
+  font-weight: 500;
+}
+.contact-list a:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+#contact .f-socials {
+  margin-top: clamp(24px, 4svh, 36px);
+}
+#contact .f-socials a {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(23, 24, 28, 0.24);
+  border-radius: 50%;
+  color: var(--ink);
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+#contact .f-socials a:hover {
+  color: #fff;
+  background: var(--blue);
+  border-color: var(--blue);
+}
+
+.contact-form {
+  display: grid;
+  gap: 18px;
+  border-radius: 28px;
+  background: #fff;
+  padding: clamp(24px, 3.6vw, 48px);
+  box-shadow: 0 30px 70px -40px rgba(23, 24, 28, 0.3);
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.field label small {
+  font-weight: 500;
+  opacity: 0.55;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font: 500 1rem var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid rgba(23, 24, 28, 0.1);
+  border-radius: 14px;
+  padding: 15px 18px;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 150px;
+  line-height: 1.5;
+}
+.field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 48px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317181c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 20px;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink);
+  opacity: 0.4;
+}
+.field input:hover,
+.field select:hover,
+.field textarea:hover {
+  border-color: rgba(23, 24, 28, 0.25);
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--blue);
+}
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.field.invalid input,
+.field.invalid textarea {
+  border-color: #dd0024;
+}
+.contact-form .btns {
+  margin-top: 6px;
+}
+.contact-form .btn {
+  cursor: pointer;
+  font-family: var(--font);
+}
+.form-status {
+  font-size: 0.92rem;
+  font-weight: 500;
+  min-height: 1.4em;
+  opacity: 0.8;
+}
+.form-status.error {
+  color: #dd0024;
+  opacity: 1;
+}
+
+@media (max-aspect-ratio: 6/5), (max-width: 780px) {
+  #contact-hero {
+    height: min(78svh, 640px);
+  }
+  #contact {
+    grid-template-columns: 1fr;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  .contact-form {
+    border-radius: 24px;
+  }
+}
